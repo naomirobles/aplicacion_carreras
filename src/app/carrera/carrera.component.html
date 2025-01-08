@@ -1,0 +1,115 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h1 class="card-title">
+        Lista de carreras
+      </h1>
+      <!-- Barra de búsqueda -->
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar carrera..."
+          [(ngModel)]="searchTerm"
+          name="searchTerm">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="buscarRegistro()">
+          Buscar
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Duración</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of filteredCarreras">
+            <td>{{ c.id }}</td>
+            <td>{{ c.nombreCarrera }}</td>
+            <td>{{ c.descripcionCarrera }}</td>
+            <td>{{ c.duracionCarrera }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-outline-info me-2"
+                (click)="actualizarRegistro(c)">
+                Actualizar
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                (click)="eliminarRegistro(c)">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Formulario dinámico para editar o crear una carrera -->
+      <div *ngIf="carreraSeleccionada" class="mt-4">
+        <h3>{{ modoCreacion ? 'Crear Nueva Carrera' : 'Editar Carrera' }}</h3>
+        <form>
+          <div class="mb-3">
+            <label for="nombreCarrera" class="form-label">Nombre</label>
+            <input
+              id="nombreCarrera"
+              [(ngModel)]="carreraSeleccionada.nombreCarrera"
+              class="form-control"
+              placeholder="Nombre de la carrera"
+              name="nombreCarrera">
+          </div>
+          <div class="mb-3">
+            <label for="descripcionCarrera" class="form-label">Descripción</label>
+            <input
+              id="descripcionCarrera"
+              [(ngModel)]="carreraSeleccionada.descripcionCarrera"
+              class="form-control"
+              placeholder="Descripción de la carrera"
+              name="descripcionCarrera">
+          </div>
+          <div class="mb-3">
+            <label for="duracionCarrera" class="form-label">Duración (semestres)</label>
+            <input
+              id="duracionCarrera"
+              type="number"
+              [(ngModel)]="carreraSeleccionada.duracionCarrera"
+              class="form-control"
+              placeholder="Duración en semestres"
+              name="duracionCarrera">
+          </div>
+          <button
+            type="button"
+            class="btn btn-success me-2"
+            (click)="guardarCambios()">
+            {{ modoCreacion ? 'Crear' : 'Guardar' }}
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancelarEdicion()">
+            Cancelar
+          </button>
+        </form>
+      </div>
+
+      <!-- Botón para agregar un nuevo registro -->
+      <button
+        *ngIf="!carreraSeleccionada"
+        type="button"
+        class="btn btn-success mt-3"
+        (click)="crearNuevoRegistro()">
+        Crear nuevo registro
+      </button>
+    </div>
+  </div>
+</div>
