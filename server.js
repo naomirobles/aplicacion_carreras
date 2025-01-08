@@ -2,13 +2,18 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Sirve los archivos estáticos desde dist
-app.use(express.static('./dist/proyecto1'));
+// Definimos la ruta correcta al directorio dist
+const distPath = path.join(__dirname, 'dist/proyecto1/browser');
 
-// Maneja las rutas de Angular
-app.get('/*', (req, res) =>
-    res.sendFile('index.html', {root: 'dist/proyecto1/'}),
-);
+// Servir archivos estáticos desde el directorio dist
+app.use(express.static(distPath));
 
-// Start the app by listening on the default Heroku port
-app.listen(process.env.PORT || 8080);
+// Manejar todas las rutas de Angular
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+});
+
+// Iniciar el servidor
+app.listen(process.env.PORT || 8080, () => {
+    console.log(`Servidor corriendo en el puerto ${process.env.PORT || 8080}`);
+});
